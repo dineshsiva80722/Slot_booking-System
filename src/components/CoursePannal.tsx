@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios'; // Import axios
 
 interface Course {
   _id: string;
@@ -24,42 +25,31 @@ const CoursePannal = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/courses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newCourse),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add course');
-      }
-
-      const addedCourse = await response.json();
+      const response = await axios.post('http://localhost:3000/courses', newCourse);
+      const addedCourse = response.data;
       setCourses([...courses, addedCourse]);
-      setNewCourse({ course: '', description: '' }); // Reset form
-      setShowForm(false); // Close modal
+      setNewCourse({ course: '', description: '' }); 
+      setShowForm(false); 
     } catch (error) {
       console.error('Error adding course:', error);
-      // You might want to show an error message to the user here
+
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:3000'); 
-        const data = await res.json(); 
-        console.log(data);
-        setCourses(data); 
+        const response = await axios.get('http://localhost:3000'); 
+        setCourses(response.data);
+        console.log(response.data);
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, []); 
+  }, []);
 
   return (
     <>
@@ -117,15 +107,15 @@ const CoursePannal = () => {
           {courses.length > 0 ? (
             courses.map((course) => (
               <div className='m-3 ' key={course._id}>
-                <div className=' min-w-80 min-h-60  shadow-md   hover:shadow-2xl transition-all  p-5 rounded-lg'>
-                  <h2 className='text-2xl text-center  ' >{course.course}</h2>
+                <div className='min-w-80 min-h-60 shadow-md hover:shadow-2xl transition-all p-5 rounded-lg'>
+                  <h2 className='text-2xl text-center'>{course.course}</h2>
                   <p className='py-2 text-center'>Description: {course.description}</p>
-                  <button className='btn btn-primary d-block px-5 mx-auto mt-3'>view</button>
+                  <button className='btn btn-primary d-block px-5 mx-auto mt-3'>View</button>
                 </div>
               </div>
             ))
           ) : (
-            <p>Loading...</p> 
+            <p>Loading...</p>
           )}
         </div>
       </div>
