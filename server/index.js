@@ -43,6 +43,38 @@ app.post('/courses', (req, res) => {
 
   res.status(201).json(newCourse);
 });
+  // app.post('/courses', async (req, res) => {
+  //   try {
+  //     const { course, description } = req.body;
+  
+  //     if (!course || !description) {
+  //       return res.status(400).json({ error: 'Course and description are required' });
+  //     }
+  
+  //     // Create new course document
+  //     const newCourse = new itemModel({
+  //       _id: new mongoose.Types.ObjectId(),
+  //       course,
+  //       description
+  //     });
+  
+  //     // Save to MongoDB
+  //     const savedCourse = await newCourse.save();
+  //     console.log('Course saved successfully:', savedCourse);
+      
+  //     res.status(201).json({ 
+  //       success: true, 
+  //       message: 'Course added successfully!',
+  //       course: savedCourse 
+  //     });
+  //   } catch (error) {
+  //     console.error('Error saving course:', error);
+  //     res.status(500).json({ 
+  //       success: false, 
+  //       message: 'Failed to add course' 
+  //     });
+  //   }
+  // });
 
 
 app.listen(3000, () => {

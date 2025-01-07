@@ -24,13 +24,6 @@ const CoursePannal = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // axios.post('http://localhost:3000/Course', {
-    //   course: 'Web Development',
-    //   description: '9 months',
-    // })
-    // .then(response => console.log('Course Added:', response.data))
-    // .catch(error => console.error('Error:', error.response?.data || error.message));
-    
     try {
       const response = await axios.post('http://localhost:3000/courses', newCourse);
       const addedCourse = response.data;
@@ -108,20 +101,31 @@ const CoursePannal = () => {
             </div>
           </div>
         )}
-
-        <div className="d-flex flex-row flex-wrap">
-          {courses.length > 0 ? (
-            courses.map((course, index) => (
-              <div key={course._id || index} className='m-3'>
-                <div className='min-w-80 min-h-60 shadow-md hover:shadow-2xl transition-all p-5 rounded-lg'>
-                  <h2 className='text-2xl text-center'>{course.course}</h2>
-                  <p className='py-2 text-center'>Description: {course.description}</p>
-                  <button className='btn btn-primary d-block px-5 mx-auto mt-3'>View</button>
+        <div className="d-flex place-content-center flex-row flex-wrap">
+          {courses === null || courses === undefined ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+          ) : courses.length > 0 ? (
+            courses.map((course) => {
+              const courseName =
+                typeof course.course === "string" ? course.course : JSON.stringify(course.course);
+              const description =
+                typeof course.description === "string" ? course.description : JSON.stringify(course.description);
+              return (
+                <div key={course._id} className="m-3 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+                  <div className="min-w-80 min-h-60 shadow-md hover:shadow-2xl transition-all p-5 rounded-lg bg-white">
+                    <h2 className="text-2xl text-center font-semibold">{courseName}</h2>
+                    <p className="py-2 text-center text-gray-600">Description: {description}</p>
+                    <button className="btn btn-primary d-block px-5 mx-auto mt-3">View</button>
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
-            <p>Loading...</p>
+            <div className="text-center w-full py-10">
+              <p className="text-xl text-gray-600">No courses available.</p>
+            </div>
           )}
         </div>
       </div>
