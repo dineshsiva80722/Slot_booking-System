@@ -3,4 +3,4 @@ const itemSchema = new mongoose.Schema({
     description: String
 });
 
-const itemModel = mongoose.model('Course_details', itemSchema); 
+const Course = mongoose.model('Course_details', courseSchema);

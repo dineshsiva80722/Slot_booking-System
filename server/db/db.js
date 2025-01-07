@@ -5,8 +5,6 @@ const connectDB = async () => {
         const conn = await mongoose.connect('mongodb://localhost:27017/Cybernaut_Slot-Booking', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useFindAndModify: true,
-            useCreateIndex: true
         });
  
         console.log(`MongoDB Connected: ${conn.connection.host}`);
